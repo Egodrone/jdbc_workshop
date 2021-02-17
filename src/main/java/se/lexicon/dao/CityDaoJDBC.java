@@ -128,7 +128,7 @@ public class CityDaoJDBC implements CityDao {
     public City add(City city) {
         System.out.printf(city.getName());
 
-        String query = "INSERT INTO city(Name, CountryCode, District, Population) VALUES('"
+        String query = "INSERT INTO city(`Name`, CountryCode, District, Population) VALUES('"
                 + city.getName() + "', '" + city.getCountryCode() + "','"
                 + city.getDistrict() + "'," + city.getPopulation() + ")";
 
@@ -151,9 +151,27 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public City update(City city) {
-        Connection connection = DbConnection.getConnection();
+        System.out.printf(city.getName());
 
-        return null;
+        String query = "UPDATE city SET `Name` = '"
+                + city.getName() + "', CountryCode = '"
+                + city.getCountryCode() + "', District = '"
+                + city.getDistrict() + "', Population = "
+                + city.getPopulation() + " WHERE Id = " + city.getId();
+
+        City newCity = new City();
+
+        try(
+                PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
+        ) {
+            int key = preparedStatement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            city.setId(key);
+            newCity = city;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return newCity;
     }
 
 
@@ -161,7 +179,7 @@ public class CityDaoJDBC implements CityDao {
     @Override
     public int delete(City city) {
 
-        String query = "delete from city where id = ?";
+        String query = "DELETE FROM city WHERE id = ?";
         try (
                 PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
         ) {

@@ -37,12 +37,16 @@ public class App
 
         System.out.println("---------------------------------");
         City cityToAdd = cityDao.add(new City("sss", "NLD", "sss", 92020));
-        //System.out.println(cityToAdd.getId());
+        System.out.println(cityToAdd.getId());
 
+        System.out.println("---------------------------------");
+        City updateCity = cityDao.update(new City(4,"Mazar-e-Sharif", "AFG", "Balkh", 127088));
+        System.out.println(updateCity.getPopulation());
 
         System.out.println("---------------------------------");
         City cityToDelete = new City(4079, "Rafah", "PSE", "Rafah", 92020);
         findAllList = cityDao.findAll();
+
         //findAllList.forEach(System.out::println);
     }
 }
