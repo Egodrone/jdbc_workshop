@@ -14,22 +14,26 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public City findById(int id) {
-        City ct = new City();
-        Connection connection = DbConnection.getConnection();
-        String query = "select id,name from city where id = ?";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        String query = "select * from city where id = ?";
+        City city = new City();
+        try (
+                PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query);
+        ) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                System.out.println(resultSet.getInt("id") + " - " + resultSet.getString("name"));
-            } else {
-                System.out.println(" data not found ");
+                city.setId(resultSet.getInt(1));
+                city.setName(resultSet.getString(2));
+                city.setCountryCode(resultSet.getString(3));
+                city.setDistrict(resultSet.getString(4));
+                city.setPopulation(resultSet.getInt(5));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return city;
     }
 
 
@@ -123,8 +127,11 @@ public class CityDaoJDBC implements CityDao {
         return new City();
     }
 
+
+
     @Override
     public City update(City city) {
+        
         return null;
     }
 
@@ -144,6 +151,7 @@ public class CityDaoJDBC implements CityDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return 0;
     }
 }

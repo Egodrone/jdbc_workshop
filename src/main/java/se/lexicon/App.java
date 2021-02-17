@@ -4,7 +4,6 @@ package se.lexicon;
 
 import se.lexicon.dao.CityDaoJDBC;
 import se.lexicon.model.City;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,35 +15,29 @@ public class App
         System.out.println( "JDBC Workshop" );
 
         System.out.println( "------------------------------" );
-        CityDaoJDBC jbc = new CityDaoJDBC();
-        City ct = new City();
+        CityDaoJDBC cityDao = new CityDaoJDBC();
 
         System.out.println("---------------------------------");
-        ct = jbc.findById(11);
-        //System.out.println(ct.toString());
-
-
+        City city = cityDao.findById(11);
+        System.out.println("city = " + city);
 
         System.out.println("---------------------------------");
-        //2
-        List<City> ctList = new ArrayList<>();
         String cCode = "AFG";
-        ctList = jbc.findByCode(cCode);
-        System.out.println(ctList.toString());
+        List<City> cityList = cityDao.findByCode(cCode);
+        cityList.forEach(System.out::println);
 
         System.out.println("---------------------------------");
         String cName = "Ede";
-        List<City> findByNameList = jbc.findByName(cName);
-        System.out.println(findByNameList.toString());
-
+        List<City> findByNameList = cityDao.findByName(cName);
+        findByNameList.forEach(System.out::println);
 
         System.out.println("---------------------------------");
-        List<City> findAllList = jbc.findAll();
-        System.out.println(findAllList.toString());
+        List<City> findAllList = cityDao.findAll();
+        findAllList.forEach(System.out::println);
 
         System.out.println("---------------------------------");
         City cityToDelete = new City(4079, "Rafah", "PSE", "Rafah", 92020);
-        findAllList = jbc.findAll();
-        System.out.println(findAllList.toString());
+        findAllList = cityDao.findAll();
+        findAllList.forEach(System.out::println);
     }
 }
