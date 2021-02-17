@@ -16,11 +16,13 @@ public class CityDaoJDBC implements CityDao {
     public City findById(int id) {
         String query = "select * from city where id = ?";
         City city = new City();
+
         try (
                 PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query);
         ) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             if (resultSet.next()) {
                 city.setId(resultSet.getInt(1));
                 city.setName(resultSet.getString(2));
@@ -48,14 +50,15 @@ public class CityDaoJDBC implements CityDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, code);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String countryCode = resultSet.getString("CountryCode");
-                String ds = resultSet.getString("District");
-                int population = resultSet.getInt("population");
-                System.out.println("Id: " + id + " Name: " + name + " Population: " + population);
-                ctList.add(new City(id, name, countryCode,ds, population));
+                ctList.add(new City(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getInt(5)
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,14 +78,15 @@ public class CityDaoJDBC implements CityDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name2 = resultSet.getString("name");
-                String countryCode = resultSet.getString("CountryCode");
-                String ds = resultSet.getString("District");
-                int population = resultSet.getInt("population");
-                System.out.println("Id: " + id + " Name: " + name + " Population: " + population);
-                ctList.add(new City(id, name2, countryCode,ds, population));
+                ctList.add(new City(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getInt(5)
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,13 +106,15 @@ public class CityDaoJDBC implements CityDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name2 = resultSet.getString("name");
-                String countryCode = resultSet.getString("CountryCode");
-                String ds = resultSet.getString("District");
-                int population = resultSet.getInt("population");
-                ctList.add(new City(id, name2, countryCode,ds, population));
+                ctList.add(new City(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getInt(5)
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,7 +137,7 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public City update(City city) {
-        
+
         return null;
     }
 
