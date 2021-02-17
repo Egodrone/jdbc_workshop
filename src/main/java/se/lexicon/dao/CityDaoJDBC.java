@@ -164,8 +164,7 @@ public class CityDaoJDBC implements CityDao {
         try(
                 PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
         ) {
-            int key = preparedStatement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            city.setId(key);
+            preparedStatement.executeUpdate(query);
             newCity = city;
         } catch(SQLException e) {
             e.printStackTrace();
