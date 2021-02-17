@@ -33,11 +33,16 @@ public class App
 
         System.out.println("---------------------------------");
         List<City> findAllList = cityDao.findAll();
-        findAllList.forEach(System.out::println);
+        //findAllList.forEach(System.out::println);
+
+        System.out.println("---------------------------------");
+        City cityToAdd = cityDao.add(new City("sss", "NLD", "sss", 92020));
+        //System.out.println(cityToAdd.getId());
+
 
         System.out.println("---------------------------------");
         City cityToDelete = new City(4079, "Rafah", "PSE", "Rafah", 92020);
         findAllList = cityDao.findAll();
-        findAllList.forEach(System.out::println);
+        //findAllList.forEach(System.out::println);
     }
 }

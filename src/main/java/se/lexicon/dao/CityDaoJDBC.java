@@ -30,7 +30,6 @@ public class CityDaoJDBC implements CityDao {
                 city.setDistrict(resultSet.getString(4));
                 city.setPopulation(resultSet.getInt(5));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,10 +126,25 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public City add(City city) {
-        Connection connection = DbConnection.getConnection();
-        String query = "INSERT INTO city VALUES ? ? ? ? ?";
+        System.out.printf(city.getName());
 
-        return new City();
+        String query = "INSERT INTO city(Name, CountryCode, District, Population) VALUES('"
+                + city.getName() + "', '" + city.getCountryCode() + "','"
+                + city.getDistrict() + "'," + city.getPopulation() + ")";
+
+        City newCity = new City();
+
+        try(
+                PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
+                ) {
+            int key = preparedStatement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            city.setId(key);
+            newCity = city;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return newCity;
     }
 
 

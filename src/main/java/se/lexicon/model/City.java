@@ -13,6 +13,13 @@ public class City {
     public City() {
     }
 
+    public City(String name, String countryCode, String district, int population) {
+        this.name = name;
+        this.countryCode = countryCode;
+        this.district = district;
+        this.population = population;
+    }
+
     public City(int id, String name, String countryCode, String district, int population) {
         this.id = id;
         this.name = name;
