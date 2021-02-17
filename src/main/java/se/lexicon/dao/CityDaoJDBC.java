@@ -14,11 +14,11 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public City findById(int id) {
-        String query = "select * from city where id = ?";
+        String query = "SELECT * FROM city WHERE id = ?";
         City city = new City();
 
         try (
-                PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query);
+                PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
         ) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -42,12 +42,12 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public List<City> findByCode(String code) {
-        Connection connection = DbConnection.getConnection();
         List<City> ctList = new ArrayList<>();
 
-        String query = "select * from city where CountryCode = ?";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        String query = "SELECT * FROM city WHERE CountryCode = ?";
+        try (
+            PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
+        ) {
             preparedStatement.setString(1, code);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -70,12 +70,12 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public List<City> findByName(String name) {
-        Connection connection = DbConnection.getConnection();
         List<City> ctList = new ArrayList<>();
-        String query = "select * from city where `Name` = ?";
+        String query = "SELECT * FROM city WHERE `Name` = ?";
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        try (
+            PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
+        ) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -99,12 +99,12 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public List<City> findAll() {
-        Connection connection = DbConnection.getConnection();
         List<City> ctList = new ArrayList<>();
-        String query = "select * from city";
+        String query = "SELECT * FROM city";
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        try (
+            PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
+        ) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -137,6 +137,7 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public City update(City city) {
+        Connection connection = DbConnection.getConnection();
 
         return null;
     }
@@ -145,11 +146,10 @@ public class CityDaoJDBC implements CityDao {
 
     @Override
     public int delete(City city) {
-        Connection connection = DbConnection.getConnection();
 
         String query = "delete from city where id = ?";
         try (
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
         ) {
             preparedStatement.setInt(1, city.getId());
             int result = preparedStatement.executeUpdate();
