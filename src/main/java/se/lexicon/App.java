@@ -44,9 +44,13 @@ public class App
         System.out.println(updateCity.getPopulation());
 
         System.out.println("---------------------------------");
+        //add
+        cityToAdd = cityDao.add(new City("Rafah", "PSE", "Rafah", 92020));
+        //delete
         City cityToDelete = new City(4079, "Rafah", "PSE", "Rafah", 92020);
-        findAllList = cityDao.findAll();
-
+        //findAllList = cityDao.findAll();
+        int deletedResult = cityDao.delete(cityToDelete);
+        System.out.println(deletedResult);
         //findAllList.forEach(System.out::println);
     }
 }

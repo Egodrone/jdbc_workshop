@@ -180,16 +180,18 @@ public class CityDaoJDBC implements CityDao {
     public int delete(City city) {
 
         String query = "DELETE FROM city WHERE id = ?";
+        int result = 0;
+
         try (
                 PreparedStatement preparedStatement = DbConnection.getConnection().prepareStatement(query)
         ) {
             preparedStatement.setInt(1, city.getId());
-            int result = preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
             System.out.println("delete result: " + result);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return 0;
+        return result;
     }
 }
