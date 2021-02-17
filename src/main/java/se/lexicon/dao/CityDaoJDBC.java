@@ -1,0 +1,149 @@
+package se.lexicon.dao;
+
+
+
+import se.lexicon.dao.db.DbConnection;
+import se.lexicon.model.City;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+public class CityDaoJDBC implements CityDao {
+
+    @Override
+    public City findById(int id) {
+        City ct = new City();
+        Connection connection = DbConnection.getConnection();
+        String query = "select id,name from city where id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                System.out.println(resultSet.getInt("id") + " - " + resultSet.getString("name"));
+            } else {
+                System.out.println(" data not found ");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    @Override
+    public List<City> findByCode(String code) {
+        Connection connection = DbConnection.getConnection();
+        List<City> ctList = new ArrayList<>();
+
+        String query = "select * from city where CountryCode = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, code);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String countryCode = resultSet.getString("CountryCode");
+                String ds = resultSet.getString("District");
+                int population = resultSet.getInt("population");
+                System.out.println("Id: " + id + " Name: " + name + " Population: " + population);
+                ctList.add(new City(id, name, countryCode,ds, population));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ctList;
+    }
+
+
+
+    @Override
+    public List<City> findByName(String name) {
+        Connection connection = DbConnection.getConnection();
+        List<City> ctList = new ArrayList<>();
+        String query = "select * from city where `Name` = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name2 = resultSet.getString("name");
+                String countryCode = resultSet.getString("CountryCode");
+                String ds = resultSet.getString("District");
+                int population = resultSet.getInt("population");
+                System.out.println("Id: " + id + " Name: " + name + " Population: " + population);
+                ctList.add(new City(id, name2, countryCode,ds, population));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ctList;
+    }
+
+
+
+    @Override
+    public List<City> findAll() {
+        Connection connection = DbConnection.getConnection();
+        List<City> ctList = new ArrayList<>();
+        String query = "select * from city";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name2 = resultSet.getString("name");
+                String countryCode = resultSet.getString("CountryCode");
+                String ds = resultSet.getString("District");
+                int population = resultSet.getInt("population");
+                ctList.add(new City(id, name2, countryCode,ds, population));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ctList;
+    }
+
+
+
+    @Override
+    public City add(City city) {
+        Connection connection = DbConnection.getConnection();
+        String query = "INSERT INTO city VALUES ? ? ? ? ?";
+
+        return new City();
+    }
+
+    @Override
+    public City update(City city) {
+        return null;
+    }
+
+
+
+    @Override
+    public int delete(City city) {
+        Connection connection = DbConnection.getConnection();
+
+        String query = "delete from city where id = ?";
+        try (
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, city.getId());
+            int result = preparedStatement.executeUpdate();
+            System.out.println("delete result: " + result);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+}
